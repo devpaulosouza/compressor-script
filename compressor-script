@@ -1,0 +1,54 @@
+#!/bin/bash
+APP_NAME="compressor-script"
+MODULE_NAME="generate_paths"
+LOG="$APP_NAME -> $MODULE_NAME:"
+path=`pwd`
+paths_file=paths.txt
+
+touch $paths_file
+
+clear_paths () {
+	echo "" > $paths_file
+	sed -i 1d $paths_file
+}
+
+generate_paths() {
+	echo "tá chegando aqui ao menos"
+	folder="$*"
+	echo $folder
+	if [ -d "${folder}" ]; then
+		echo "pelo menos aqui ta certo"
+		path="$*"
+	fi
+	
+	if [ ! -d "${path}" ]; then
+		echo Caminho: $path
+		echo "$LOG Enter a valid directory, or no parameters for the current directory"
+		exit 1
+	fi
+	
+	clear_paths
+	
+	find "${path}"/* -type f -name '*.jpg' -print0 |
+	while IFS= read -r -d '' file; do
+		echo $file >> $paths_file
+	done
+}
+
+MODULE_NAME="compressor"
+LOG="$APP_NAME -> $MODULE_NAME:"
+paths_file=paths.txt
+files=`cat ${paths_file}`
+
+if [[ -z $files ]]; then
+	echo gerando arquivo ${paths_file}
+	generate_paths $*
+fi
+
+while [[ ! -z `cat $paths_file` ]]; do
+	file=`sed -n '1p' < "${paths_file}"`
+	echo $file
+	echo $file >> log.txt
+	sed -i 1d $paths_file
+done
+
