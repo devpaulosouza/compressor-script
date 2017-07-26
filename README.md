@@ -20,7 +20,6 @@ Given any directory, the script will find the images and compile them using guet
 
 ```sh
 paulo@laptopper:~$ tree folder/
-```
 folder/
 ├── another_folder
 │   ├── bbc
@@ -30,6 +29,7 @@ folder/
 ├── pie
 │   └── apple.doc
 └── **potato.jpg**
+```
 
 
 [guetzli]:<https://github.com/google/guetzli>
