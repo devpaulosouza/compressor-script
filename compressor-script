@@ -13,11 +13,9 @@ clear_paths () {
 }
 
 generate_paths() {
-	echo "tá chegando aqui ao menos"
 	folder="$*"
 	echo $folder
 	if [ -d "${folder}" ]; then
-		echo "pelo menos aqui ta certo"
 		path="$*"
 	fi
 	
@@ -41,13 +39,14 @@ paths_file=paths.txt
 files=`cat ${paths_file}`
 
 if [[ -z $files ]]; then
-	echo gerando arquivo ${paths_file}
+	echo generating file:  ${paths_file}
 	generate_paths $*
 fi
 
 while [[ ! -z `cat $paths_file` ]]; do
 	file=`sed -n '1p' < "${paths_file}"`
-	echo $file
+	echo Compressing: $file
+	guetzli --quality 90 ${file} ${file}
 	echo $file >> log.txt
 	sed -i 1d $paths_file
 done
